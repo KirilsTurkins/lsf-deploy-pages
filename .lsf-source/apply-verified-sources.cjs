@@ -17,33 +17,53 @@ const pins = {
 }
 const profiles = [
   {
-    name: 'glob', version: '10.5.0', count: 65,
-    original: 'glob-10.5.0.original.tgz', originalHash: '18b75cb9c66c8c08bab5cacccd09013c31d3182f1e001c19d8815c5bb46e0802',
+    name: 'glob',
+    version: '10.5.0',
+    count: 65,
+    original: 'glob-10.5.0.original.tgz',
+    originalHash: '18b75cb9c66c8c08bab5cacccd09013c31d3182f1e001c19d8815c5bb46e0802',
     integrity: 'sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==',
-    repaired: 'glob-10.5.0-lsf-abort-v1.tar', repairedHash: 'b2f6d5fb3bd7b63df8454989bfb9d812a29ea67bbbbe81cc5e0e2c4c32e06d68',
-    recipe: 'glob-10.5.0-lsf-abort-v1.repair.json', recipeHash: 'beb9c5bed151b7a67f3b7b384e04ae0c01ca52e093795c042b9b3a3542a54e0f',
+    repaired: 'glob-10.5.0-lsf-abort-v1.tar',
+    repairedHash: 'b2f6d5fb3bd7b63df8454989bfb9d812a29ea67bbbbe81cc5e0e2c4c32e06d68',
+    recipe: 'glob-10.5.0-lsf-abort-v1.repair.json',
+    recipeHash: 'beb9c5bed151b7a67f3b7b384e04ae0c01ca52e093795c042b9b3a3542a54e0f',
     targets: ['dist/commonjs/walker.js', 'dist/esm/walker.js'],
     installed: ['node_modules/glob']
   },
   {
-    name: 'minimatch', version: '9.0.9', count: 53,
-    original: 'minimatch-9.0.9.original.tgz', originalHash: '7d28c9a3ef17ce542093c78ec191481503e2711d29db1bd1522062303ab40478',
+    name: 'minimatch',
+    version: '9.0.9',
+    count: 53,
+    original: 'minimatch-9.0.9.original.tgz',
+    originalHash: '7d28c9a3ef17ce542093c78ec191481503e2711d29db1bd1522062303ab40478',
     integrity: 'sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg==',
-    repaired: 'minimatch-9.0.9-lsf-bound-v1.tar', repairedHash: '66bcb5a384e44e094efb868280fa4607660da97bbd9d0489eb7cc69eb2da93b2',
-    recipe: 'minimatch-9.0.9-lsf-bound-v1.repair.json', recipeHash: '67f874fd66ff2bbc9930e5a3529cf15fb7eb9fc15bd7e7d82969c0289b12a207',
+    repaired: 'minimatch-9.0.9-lsf-bound-v1.tar',
+    repairedHash: '66bcb5a384e44e094efb868280fa4607660da97bbd9d0489eb7cc69eb2da93b2',
+    recipe: 'minimatch-9.0.9-lsf-bound-v1.repair.json',
+    recipeHash: '67f874fd66ff2bbc9930e5a3529cf15fb7eb9fc15bd7e7d82969c0289b12a207',
     targets: ['dist/commonjs/index.js', 'dist/esm/index.js'],
-    installed: ['node_modules/glob/node_modules/minimatch', 'node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch']
+    installed: [
+      'node_modules/glob/node_modules/minimatch',
+      'node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch'
+    ]
   },
   {
-    name: 'deepmerge', version: '4.3.1', count: 11,
-    original: 'deepmerge-4.3.1.original.tgz', originalHash: '4003a0a348276a95543fa969f561f6b5968629acbbb59d66018dd23e7b8f1d5c',
+    name: 'deepmerge',
+    version: '4.3.1',
+    count: 11,
+    original: 'deepmerge-4.3.1.original.tgz',
+    originalHash: '4003a0a348276a95543fa969f561f6b5968629acbbb59d66018dd23e7b8f1d5c',
     integrity: 'sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==',
-    installedIntegrity: 'sha512-w9M3UphEGYK/Zn9kkYnPVw7NnQyxE3T7gIcqBv3m4/Fe+LAhnAPZBwgYCqj0/orv2GagYhPGa2OMjqdzp7G0Lg==',
+    installedIntegrity:
+      'sha512-w9M3UphEGYK/Zn9kkYnPVw7NnQyxE3T7gIcqBv3m4/Fe+LAhnAPZBwgYCqj0/orv2GagYhPGa2OMjqdzp7G0Lg==',
     installedResolved: 'file:.lsf-source/deepmerge-4.3.1-lsf-prototype-v1.tar',
-    repaired: 'deepmerge-4.3.1-lsf-prototype-v1.tar', repairedHash: 'c4ca0f4eb3a2464c026bc3dec5d9eaf04544aed24c3fd1d77da95f85e36c369f',
-    recipe: 'deepmerge-4.3.1-lsf-prototype-v1.repair.json', recipeHash: 'e402617d1e791c4bed35768b6c34ba68c370c076551495e738de0731ad2049c7',
+    repaired: 'deepmerge-4.3.1-lsf-prototype-v1.tar',
+    repairedHash: 'c4ca0f4eb3a2464c026bc3dec5d9eaf04544aed24c3fd1d77da95f85e36c369f',
+    recipe: 'deepmerge-4.3.1-lsf-prototype-v1.repair.json',
+    recipeHash: 'e402617d1e791c4bed35768b6c34ba68c370c076551495e738de0731ad2049c7',
     targets: ['dist/cjs.js', 'dist/umd.js', 'index.js'],
-    installed: ['node_modules/deepmerge'], requireRepaired: true
+    installed: ['node_modules/deepmerge'],
+    requireRepaired: true
   }
 ]
 
@@ -74,12 +94,18 @@ function readTar(bytes, expectedCount) {
   assert(bytes.length <= 2 * 1024 * 1024 && bytes.length % 512 === 0, 'tar size')
   const files = new Map()
   const text = (b, start, end) => b.subarray(start, end).toString('ascii').replace(/\0.*$/, '')
-  const octal = s => { assert(/^[0-7 ]*$/.test(s)); return parseInt(s.trim() || '0', 8) }
+  const octal = s => {
+    assert(/^[0-7 ]*$/.test(s))
+    return parseInt(s.trim() || '0', 8)
+  }
   let offset = 0
   while (offset + 512 <= bytes.length) {
     const header = bytes.subarray(offset, offset + 512)
     if (header.every(byte => byte === 0)) {
-      assert(bytes.subarray(offset).every(byte => byte === 0), 'nonzero tar trailer')
+      assert(
+        bytes.subarray(offset).every(byte => byte === 0),
+        'nonzero tar trailer'
+      )
       offset = bytes.length
       break
     }
@@ -141,7 +167,11 @@ function installedMembers(base, relative) {
 function checkAndApply(base = root, apply = true) {
   base = path.resolve(base)
   for (const [name, digest] of Object.entries(pins)) readPinned(base, name, digest)
-  readPinned(base, '.lsf-source/deepmerge-4.3.1-lsf-prototype-v1.source.json', 'b4b0b79fa2bc84c6f1e1c61ddcc1ab228df629f9fce4b1067d3ac8b3d1c42892')
+  readPinned(
+    base,
+    '.lsf-source/deepmerge-4.3.1-lsf-prototype-v1.source.json',
+    'b4b0b79fa2bc84c6f1e1c61ddcc1ab228df629f9fce4b1067d3ac8b3d1c42892'
+  )
   const lock = JSON.parse(fs.readFileSync(safePath(base, 'package-lock.json')))
   const pending = []
   for (const profile of profiles) {
@@ -161,17 +191,28 @@ function checkAndApply(base = root, apply = true) {
       const expected = rows.has(name) ? applyEdits(bytes, rows.get(name)) : bytes
       assert(expected.equals(repaired.get(name)), `reconstruction mismatch: ${profile.name}/${name}`)
     }
-    const matching = Object.entries(lock.packages).filter(([name, row]) => name.endsWith(`/${profile.name}`) && row.version === profile.version).map(([name]) => name).sort()
+    const matching = Object.entries(lock.packages)
+      .filter(([name, row]) => name.endsWith(`/${profile.name}`) && row.version === profile.version)
+      .map(([name]) => name)
+      .sort()
     assert.deepEqual(matching, [...profile.installed].sort(), `lock installations: ${profile.name}`)
     for (const location of profile.installed) {
-      assert.equal(lock.packages[location].integrity, profile.installedIntegrity || profile.integrity, `lock integrity: ${location}`)
-      if (profile.installedResolved) assert.equal(lock.packages[location].resolved, profile.installedResolved, `lock resolution: ${location}`)
+      assert.equal(
+        lock.packages[location].integrity,
+        profile.installedIntegrity || profile.integrity,
+        `lock integrity: ${location}`
+      )
+      if (profile.installedResolved)
+        assert.equal(lock.packages[location].resolved, profile.installedResolved, `lock resolution: ${location}`)
       const members = installedMembers(base, location)
       assert.deepEqual([...members.keys()].sort(), [...original.keys()].sort(), `installed members: ${location}`)
       for (const [name, actual] of members) {
         const before = original.get(name)
         const after = repaired.get(name)
-        assert(actual.equals(after) || (!profile.requireRepaired && actual.equals(before)), `installed bytes: ${location}/${name}`)
+        assert(
+          actual.equals(after) || (!profile.requireRepaired && actual.equals(before)),
+          `installed bytes: ${location}/${name}`
+        )
         if (!actual.equals(after)) pending.push({ file: safePath(base, `${location}/${name}`), bytes: after })
       }
     }
@@ -179,16 +220,28 @@ function checkAndApply(base = root, apply = true) {
   const resolution = [
     ['glob', 'node_modules/archiver-utils', 'node_modules/glob/dist/commonjs/index.js'],
     ['minimatch', 'node_modules/glob', 'node_modules/glob/node_modules/minimatch/dist/commonjs/index.js'],
-    ['minimatch', 'node_modules/@typescript-eslint/typescript-estree', 'node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch/dist/commonjs/index.js']
+    [
+      'minimatch',
+      'node_modules/@typescript-eslint/typescript-estree',
+      'node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch/dist/commonjs/index.js'
+    ]
   ]
   for (const [name, from, expected] of resolution) {
-    assert.equal(require.resolve(name, { paths: [safePath(base, from, true)] }), safePath(base, expected), `resolution: ${name} from ${from}`)
+    assert.equal(
+      require.resolve(name, { paths: [safePath(base, from, true)] }),
+      safePath(base, expected),
+      `resolution: ${name} from ${from}`
+    )
   }
   if (apply) {
     for (const row of pending) fs.writeFileSync(row.file, row.bytes)
     for (const row of pending) assert(fs.readFileSync(row.file).equals(row.bytes), `write failed: ${row.file}`)
   } else assert.equal(pending.length, 0, 'installed sources are not fully repaired')
-  return { profiles: profiles.map(row => `${row.name}@${row.version}`), changedFiles: pending.length, graph: 'unchanged pinned lock' }
+  return {
+    profiles: profiles.map(row => `${row.name}@${row.version}`),
+    changedFiles: pending.length,
+    graph: 'unchanged pinned lock'
+  }
 }
 
 module.exports = { checkAndApply, readTar }
