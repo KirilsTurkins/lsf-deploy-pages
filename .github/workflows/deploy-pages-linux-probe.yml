@@ -1,0 +1,118 @@
+name: Deploy Pages source repair Linux diagnostic
+
+on:
+  push:
+    branches:
+      - diagnostic/deploy-pages-linux-20261105-r3
+
+permissions:
+  contents: read
+
+jobs:
+  linux-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout diagnostic head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Authenticate candidate and preserve expected output
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse 'HEAD^')" = 28eb881c437639997329a63ba203044a1e930cef
+          test "$(git rev-parse 'HEAD^^{tree}')" = 79d01754bcbda86178d60a411e8256696a265f5c
+          test "$(git diff --name-only HEAD^ HEAD)" = .github/workflows/deploy-pages-linux-probe.yml
+          mkdir -p "$RUNNER_TEMP/deploy-pages-evidence/expected"
+          cp dist/index.js dist/index.js.map dist/835.index.js dist/835.index.js.map dist/licenses.txt dist/sourcemap-register.js "$RUNNER_TEMP/deploy-pages-evidence/expected/"
+          printf 'candidate=%s\ntree=%s\ndiagnostic=%s\n' "$(git rev-parse HEAD^)" "$(git rev-parse 'HEAD^^{tree}')" "$GITHUB_SHA" > "$RUNNER_TEMP/deploy-pages-evidence/source.txt"
+      - name: Set up Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.19.0
+      - name: Select and record npm 11.17
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global npm@11.17.0 --no-audit --no-fund
+          test "$(node --version)" = v24.19.0
+          test "$(npm --version)" = 11.17.0
+          printf 'node=%s\nnpm=%s\n' "$(node --version)" "$(npm --version)" > "$RUNNER_TEMP/deploy-pages-evidence/tool-versions.txt"
+      - name: Clean install and build
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --no-audit --no-fund
+          echo success > "$RUNNER_TEMP/deploy-pages-evidence/build-succeeded.txt"
+      - name: Run source and compatibility controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run test:security-source
+          echo success > "$RUNNER_TEMP/deploy-pages-evidence/source-tests-succeeded.txt"
+      - name: Run existing formatting check
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run format:check
+          echo success > "$RUNNER_TEMP/deploy-pages-evidence/format-succeeded.txt"
+      - name: Compare exact rebuilt bundles
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, re, sys
+          from pathlib import Path
+          evidence = Path(os.environ['RUNNER_TEMP']) / 'deploy-pages-evidence'
+          expected = evidence / 'expected'
+          names = ['index.js', 'index.js.map', '835.index.js', '835.index.js.map', 'licenses.txt', 'sourcemap-register.js']
+          sha = lambda data: hashlib.sha256(data).hexdigest()
+          normal = lambda data: data.replace(b'\r\n', b'\n')
+          report = {'files': []}
+          for name in names:
+              a, b = (expected / name).read_bytes(), (Path('dist') / name).read_bytes()
+              report['files'].append({'name': name, 'expectedBytes': len(a), 'actualBytes': len(b), 'expectedSha256': sha(a), 'actualSha256': sha(b), 'exact': a == b, 'lfEqual': normal(a) == normal(b)})
+          marker = re.compile(rb'(?m)^/\*\*\*/ (\d+):\n/\*\*\*/ ')
+          def modules(data):
+              data = normal(data)
+              rows = list(marker.finditer(data))
+              order = [int(row[1]) for row in rows]
+              if len(order) != len(set(order)) or not order:
+                  return None, None, None
+              return data[:rows[0].start()], order, {int(row[1]): data[row.start():rows[i + 1].start() if i + 1 < len(rows) else len(data)] for i, row in enumerate(rows)}
+          prefix_a, order_a, mods_a = modules((expected / 'index.js').read_bytes())
+          prefix_b, order_b, mods_b = modules(Path('dist/index.js').read_bytes())
+          if mods_a is not None and mods_b is not None:
+              report['webpack'] = {'expectedCount': len(mods_a), 'actualCount': len(mods_b), 'samePrefix': prefix_a == prefix_b, 'sameIds': set(mods_a) == set(mods_b), 'sameOrder': order_a == order_b, 'changedCommonModuleIds': sorted(k for k in mods_a.keys() & mods_b.keys() if mods_a[k] != mods_b[k])}
+          for name in ['index.js.map']:
+              old = json.loads((expected / name).read_text(encoding='utf8'))
+              new = json.loads((Path('dist') / name).read_text(encoding='utf8'))
+              left, right = dict(zip(old['sources'], old['sourcesContent'])), dict(zip(new['sources'], new['sourcesContent']))
+              report['sourcemap'] = {'expectedSources': len(old['sources']), 'actualSources': len(new['sources']), 'sameSourceSet': left.keys() == right.keys(), 'changedSourceContents': sorted(k for k in left.keys() & right.keys() if left[k] != right[k])}
+          report['allExact'] = all(row['exact'] for row in report['files'])
+          rendered = json.dumps(report, indent=2) + '\n'
+          (evidence / 'bundle-comparison.json').write_text(rendered, encoding='utf8')
+          print(rendered)
+          sys.exit(0 if report['allExact'] else 1)
+          PY
+      - name: Retain outputs and comparison
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/deploy-pages-evidence/actual"
+          for name in index.js index.js.map 835.index.js 835.index.js.map licenses.txt sourcemap-register.js; do
+            if test -f "dist/$name"; then cp "dist/$name" "$RUNNER_TEMP/deploy-pages-evidence/actual/$name"; fi
+          done
+          rm -rf "$RUNNER_TEMP/deploy-pages-evidence/expected"
+      - name: Upload bounded diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: deploy-pages-linux-diagnostic
+          path: ${{ runner.temp }}/deploy-pages-evidence/
+          if-no-files-found: error
+          retention-days: 7
